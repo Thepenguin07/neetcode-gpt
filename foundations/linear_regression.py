@@ -1,24 +1,18 @@
 import numpy as np
 from numpy.typing import NDArray
 
-
 class Solution:
 
-    def binary_cross_entropy(self, y_true: NDArray[np.float64], y_pred: NDArray[np.float64]) -> float:
-        # y_true: true labels (0 or 1)
-        # y_pred: predicted probabilities
-        # Hint: add a small epsilon (1e-7) to y_pred to avoid log(0)
-        # return round(your_answer, 4)
-        l=np.mean(-y_true*np.log(y_pred)-(1-y_true)*np.log(1-y_pred))
-        return np.round(l,4)
+    def get_model_prediction(self, X: NDArray[np.float64], weights: NDArray[np.float64]) -> NDArray[np.float64]:
+        # X is (n, m), weights is (m,) -> return (n,) predictions
+        # Round to 5 decimal places
+        predictions=np.dot(X,weights)
+        return np.round(predictions,5)
         pass
 
-    def categorical_cross_entropy(self, y_true: NDArray[np.float64], y_pred: NDArray[np.float64]) -> float:
-        # y_true: one-hot encoded true labels (shape: n_samples x n_classes)
-        # y_pred: predicted probabilities (shape: n_samples x n_classes)
-        # Hint: add a small epsilon (1e-7) to y_pred to avoid log(0)
-        # return round(your_answer, 4)
-        y_pred=y_pred+1e-7
-        loss=-np.mean(np.sum(y_true*np.log(y_pred),axis=1))
-        return np.round(loss,4)
+    def get_error(self, model_prediction: NDArray[np.float64], ground_truth: NDArray[np.float64]) -> float:
+        # Compute mean squared error between predictions and ground truth
+        # Round to 5 decimal places
+        mse=np.mean((model_prediction-ground_truth)**2)
+        return np.round(mse,5)
         pass
